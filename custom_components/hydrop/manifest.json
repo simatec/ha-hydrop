@@ -5,11 +5,12 @@
     "@simatec"
   ],
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/hydrop",
+  "documentation": "https://github.com/simatec/ha-hydrop",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "quality_scale": "bronze",
+  "issue_tracker": "https://github.com/simatec/ha-hydrop/issues",
   "requirements": [
     "aiohttp==3.13.5"
-  ]
+  ],
+  "version": "0.3.0"
 }
