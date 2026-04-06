@@ -1,0 +1,15 @@
+{
+  "domain": "hydrop",
+  "name": "Hydropmeter",
+  "codeowners": [
+    "@simatec"
+  ],
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/hydrop",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "quality_scale": "bronze",
+  "requirements": [
+    "aiohttp==3.13.5"
+  ]
+}

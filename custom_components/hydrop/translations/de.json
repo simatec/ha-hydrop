@@ -1,0 +1,26 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Hydrop Wasserzähler einrichten",
+        "data": {
+          "name": "Anzeigename",
+          "device_name": "Gerätename",
+          "apikey": "API-Key"
+        },
+        "data_description": {
+          "name": "Anzeigename des Wasserzählers in Home Assistant",
+          "device_name": "Der Gerätename aus dem Hydrop Portal",
+          "apikey": "Der API-Key aus dem Hydrop Portal"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zur Hydrop API fehlgeschlagen. Bitte Gerätename und API-Key prüfen.",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Gerät ist bereits konfiguriert"
+    }
+  }
+}

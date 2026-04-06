@@ -1,0 +1,26 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Hydrop Water Meter",
+        "data": {
+          "name": "Display Name",
+          "device_name": "Device Name",
+          "apikey": "API Key"
+        },
+        "data_description": {
+          "name": "Display name of the water meter in Home Assistant",
+          "device_name": "The device name from the Hydrop portal",
+          "apikey": "The API key from the Hydrop portal"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Hydrop API. Please check your device name and API key.",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  }
+}
