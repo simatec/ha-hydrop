@@ -5,8 +5,6 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 
-import aiohttp
-
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -14,6 +12,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
@@ -82,20 +81,16 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         """Fetch data from Hydrop API."""
+        session = async_get_clientsession(self.hass)
         try:
-            async with aiohttp.ClientSession() as session, session.get(
+            async with session.get(
                 self.url,
                 headers={"apikey": self.api_key},
-                timeout=aiohttp.ClientTimeout(total=15),
             ) as response:
                 response.raise_for_status()
                 return await response.json()
-        except aiohttp.ClientResponseError as err:
-            raise UpdateFailed(
-                f"Hydrop API returned error {err.status}: {err.message}"
-            ) from err
-        except aiohttp.ClientError as err:
-            raise UpdateFailed(f"Error connecting to Hydrop API: {err}") from err
+        except Exception as err:
+            raise UpdateFailed(f"Error fetching Hydrop data: {err}") from err
 
 
 class HydropSensor(CoordinatorEntity, SensorEntity):
