@@ -22,5 +22,21 @@
     "abort": {
       "already_configured": "Gerät ist bereits konfiguriert"
     }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Wasserzählerstand"
+      },
+      "average_flow_rate": {
+        "name": "Durchschnittlicher Durchfluss"
+      },
+      "daily_consumption": {
+        "name": "Tagesverbrauch"
+      },
+      "measurement_time": {
+        "name": "Letzte Messung"
+      }
+    }
   }
 }

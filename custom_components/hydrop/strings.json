@@ -2,25 +2,41 @@
   "config": {
     "step": {
       "user": {
-        "title": "Hydrop Wasserzähler einrichten",
+        "title": "Set up Hydrop Water Meter",
         "data": {
-          "name": "Anzeigename",
-          "device_name": "Gerätename",
-          "apikey": "API-Key"
+          "name": "Display Name",
+          "device_name": "Device Name",
+          "apikey": "API Key"
         },
         "data_description": {
-          "name": "Anzeigename des Wasserzählers in Home Assistant",
-          "device_name": "Der Gerätename aus dem Hydrop Portal",
-          "apikey": "Der API-Key aus dem Hydrop Portal"
+          "name": "Display name of the water meter in Home Assistant",
+          "device_name": "The device name from the Hydrop Portal",
+          "apikey": "The API key from the Hydrop Portal"
         }
       }
     },
     "error": {
-      "cannot_connect": "Verbindung zur Hydrop API fehlgeschlagen. Bitte Gerätename und API-Key prüfen.",
-      "unknown": "[%key:common::config_flow::error::unknown%]"
+      "cannot_connect": "Connection to Hydrop API failed. Please check device name and API key.",
+      "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+      "already_configured": "Device is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Water Meter Reading"
+      },
+      "average_flow_rate": {
+        "name": "Average Flow Rate"
+      },
+      "daily_consumption": {
+        "name": "Daily Consumption"
+      },
+      "measurement_time": {
+        "name": "Last Measurement"
+      }
     }
   }
 }

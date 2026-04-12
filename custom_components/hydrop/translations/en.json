@@ -10,17 +10,33 @@
         },
         "data_description": {
           "name": "Display name of the water meter in Home Assistant",
-          "device_name": "The device name from the Hydrop portal",
-          "apikey": "The API key from the Hydrop portal"
+          "device_name": "The device name from the Hydrop Portal",
+          "apikey": "The API key from the Hydrop Portal"
         }
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to the Hydrop API. Please check your device name and API key.",
+      "cannot_connect": "Connection to Hydrop API failed. Please check device name and API key.",
       "unknown": "Unexpected error"
     },
     "abort": {
       "already_configured": "Device is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "meter_reading": {
+        "name": "Water Meter Reading"
+      },
+      "average_flow_rate": {
+        "name": "Average Flow Rate"
+      },
+      "daily_consumption": {
+        "name": "Daily Consumption"
+      },
+      "measurement_time": {
+        "name": "Last Measurement"
+      }
     }
   }
 }
