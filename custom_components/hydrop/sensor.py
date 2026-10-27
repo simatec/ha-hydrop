@@ -6,6 +6,8 @@ from datetime import datetime, timedelta, timezone
 import logging
 from typing import Any
 
+import aiohttp
+
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -30,6 +32,8 @@ from .const import (
     DOMAIN,
     SCAN_INTERVAL_SECONDS,
 )
+
+MAX_BACKOFF_SECONDS = 6 * 60 * 60
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -112,6 +116,16 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
         self._last_timestamp: int | None = None
         self._day_start_value: float | None = None
         self._day_start_date: str | None = None
+        self._failures = 0
+
+    def _backoff(self, seconds: float | None = None) -> None:
+        """Increase the polling interval after a failed request."""
+        self._failures += 1
+        if seconds is None:
+            seconds = SCAN_INTERVAL_SECONDS * 2 ** (self._failures - 1)
+        self.update_interval = timedelta(
+            seconds=min(max(seconds, SCAN_INTERVAL_SECONDS), MAX_BACKOFF_SECONDS)
+        )
 
     async def _async_update_data(self) -> dict:
         """Fetch data from Hydrop API."""
@@ -120,12 +134,34 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
             async with session.get(
                 self.url,
                 headers={"apikey": self.api_key},
+                timeout=aiohttp.ClientTimeout(total=30),
             ) as response:
+                if response.status in (401, 403):
+                    # Invalid key: retrying quickly only risks an API ban.
+                    self._failures += 1
+                    self.update_interval = timedelta(seconds=MAX_BACKOFF_SECONDS)
+                    raise UpdateFailed(
+                        f"Hydrop API rejected credentials (HTTP {response.status})"
+                    )
+                if response.status == 429:
+                    retry_after = response.headers.get("Retry-After", "")
+                    self._backoff(
+                        float(retry_after) if retry_after.isdigit() else None
+                    )
+                    raise UpdateFailed("Hydrop API rate limit reached (HTTP 429)")
                 response.raise_for_status()
                 raw = await response.json()
-                return self._parse(raw)
+                result = self._parse(raw)
+        except UpdateFailed:
+            raise
         except Exception as err:
+            self._backoff()
             raise UpdateFailed(f"Error fetching Hydrop data: {err}") from err
+
+        # Success: restore the normal polling interval.
+        self._failures = 0
+        self.update_interval = SCAN_INTERVAL
+        return result
 
     def _parse(self, data: dict) -> dict:
         """Extract and compute all sensor values from raw API response."""
