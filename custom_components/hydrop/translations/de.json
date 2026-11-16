@@ -6,11 +6,25 @@
         "data": {
           "name": "Anzeigename",
           "device_name": "Gerätename",
-          "apikey": "API-Key"
+          "apikey": "API-Key",
+          "scan_interval": "Abfrageintervall"
         },
         "data_description": {
           "name": "Anzeigename des Wasserzählers in Home Assistant",
           "device_name": "Der Gerätename aus dem Hydrop Portal",
+          "apikey": "Der API-Key aus dem Hydrop Portal",
+          "scan_interval": "Wie oft die Hydrop API abgefragt wird, in Minuten (Minimum 5, Standard 10)"
+        }
+      },
+      "reconfigure": {
+        "title": "Hydrop Einstellungen ändern",
+        "description": "Einstellungen für das Gerät **{device_name}** ändern.",
+        "data": {
+          "name": "Anzeigename",
+          "apikey": "API-Key"
+        },
+        "data_description": {
+          "name": "Anzeigename des Wasserzählers in Home Assistant",
           "apikey": "Der API-Key aus dem Hydrop Portal"
         }
       }
@@ -20,7 +34,21 @@
       "unknown": "Unerwarteter Fehler"
     },
     "abort": {
-      "already_configured": "Gerät ist bereits konfiguriert"
+      "already_configured": "Gerät ist bereits konfiguriert",
+      "reconfigure_successful": "Einstellungen wurden erfolgreich aktualisiert"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Hydrop Optionen",
+        "data": {
+          "scan_interval": "Abfrageintervall"
+        },
+        "data_description": {
+          "scan_interval": "Wie oft die Hydrop API abgefragt wird, in Minuten (Minimum 5, Standard 10)"
+        }
+      }
     }
   },
   "entity": {

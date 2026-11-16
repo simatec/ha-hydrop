@@ -30,15 +30,11 @@ from .const import (
     CONF_DEVICE_NAME,
     CONF_SENSOR_NAME,
     DOMAIN,
-    SCAN_INTERVAL_SECONDS,
 )
 
 MAX_BACKOFF_SECONDS = 6 * 60 * 60
 
 _LOGGER = logging.getLogger(__name__)
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_SECONDS)
-
 
 SENSOR_DESCRIPTIONS: tuple[SensorEntityDescription, ...] = (
     SensorEntityDescription(
@@ -100,15 +96,17 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
         config_entry: ConfigEntry,
         device_name: str,
         api_key: str,
+        scan_interval: timedelta,
     ) -> None:
         """Initialize the coordinator."""
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=SCAN_INTERVAL,
+            update_interval=scan_interval,
             config_entry=config_entry,
         )
+        self._scan_interval = scan_interval
         self.device_name = device_name
         self.api_key = api_key
         self.url = API_BASE_URL.format(device_name=device_name)
@@ -121,10 +119,11 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
     def _backoff(self, seconds: float | None = None) -> None:
         """Increase the polling interval after a failed request."""
         self._failures += 1
+        base_seconds = self._scan_interval.total_seconds()
         if seconds is None:
-            seconds = SCAN_INTERVAL_SECONDS * 2 ** (self._failures - 1)
+            seconds = base_seconds * 2 ** (self._failures - 1)
         self.update_interval = timedelta(
-            seconds=min(max(seconds, SCAN_INTERVAL_SECONDS), MAX_BACKOFF_SECONDS)
+            seconds=min(max(seconds, base_seconds), MAX_BACKOFF_SECONDS)
         )
 
     async def _async_update_data(self) -> dict:
@@ -160,7 +159,7 @@ class HydropDataUpdateCoordinator(DataUpdateCoordinator):
 
         # Success: restore the normal polling interval.
         self._failures = 0
-        self.update_interval = SCAN_INTERVAL
+        self.update_interval = self._scan_interval
         return result
 
     def _parse(self, data: dict) -> dict:

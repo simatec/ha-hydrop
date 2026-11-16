@@ -19,7 +19,7 @@ This integration connects Hydrop water meters to Home Assistant via the official
 ### Features
 
 - 📊 Read the current water meter reading in m³
-- 🔄 Automatic updates every 5 minutes
+- 🔄 Automatic updates with a configurable polling interval (default 10 minutes, minimum 5 minutes)
 - 💧 Full integration into the Home Assistant energy dashboard
 - 🌐 Connection via the Hydrop Cloud API with API key authentication
 - 🌍 Support for German and English
@@ -60,8 +60,16 @@ After installation, set up the integration via the user interface:
 | **Display Name** | The name of the sensor in Home Assistant (e.g., “Water Meter”) |
 | **Device Name** | The device name from the Hydrop Portal |
 | **API Key** | The API key from the Hydrop Portal |
+| **Polling interval** | How often the Hydrop API is queried, in minutes (minimum 5, default 10) |
 
 The credentials are automatically validated against the Hydrop API during setup.
+
+### Changing settings later
+
+- **Polling interval:** **Settings** → **Devices & Services** → **Hydrop** → **Configure** (gear icon)
+- **Display name / API key:** **Settings** → **Devices & Services** → **Hydrop** → ⋮ menu → **Reconfigure**
+
+Changes are applied immediately; the integration reloads automatically.
 
 ---
 

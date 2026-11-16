@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
+from datetime import timedelta
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
-from .const import CONF_API_KEY, CONF_DEVICE_NAME, DOMAIN
+from .const import (
+    CONF_API_KEY,
+    CONF_DEVICE_NAME,
+    CONF_SCAN_INTERVAL,
+    DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+    MIN_SCAN_INTERVAL,
+)
 from .sensor import HydropDataUpdateCoordinator
 
 _PLATFORMS: list[Platform] = [Platform.SENSOR]
@@ -15,11 +24,16 @@ _PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Hydrop from a config entry."""
+    scan_minutes = max(
+        int(entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)),
+        MIN_SCAN_INTERVAL,
+    )
     coordinator = HydropDataUpdateCoordinator(
         hass,
         config_entry=entry,
         device_name=entry.data[CONF_DEVICE_NAME],
         api_key=entry.data[CONF_API_KEY],
+        scan_interval=timedelta(minutes=scan_minutes),
     )
 
     try:
