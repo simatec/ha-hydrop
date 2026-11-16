@@ -1,5 +1,5 @@
 ## Changelog
-### **WORK IN PROGRESS**
+### 0.3.0 (2026-11-16)
 * (simatec) Configurable polling interval (default 10 min, minimum 5 min)
 * (simatec) Settings can be changed after setup (options and reconfigure flow)
 
