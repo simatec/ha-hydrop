@@ -1,4 +1,7 @@
 ## Changelog
+### 0.3.1 (2026-11-17)
+* (simatec) Fix device class of flow rate sensor for the energy dashboard (volume_flow_rate)
+
 ### 0.3.0 (2026-11-16)
 * (simatec) Configurable polling interval (default 10 min, minimum 5 min)
 * (simatec) Settings can be changed after setup (options and reconfigure flow)
