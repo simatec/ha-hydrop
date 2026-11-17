@@ -1,5 +1,5 @@
 ## Changelog
-### **WORK IN PROGRESS**
+### 0.3.1 (2026-11-17)
 * (simatec) Fix device class of flow rate sensor for the energy dashboard (volume_flow_rate)
 
 ### 0.3.0 (2026-11-16)
